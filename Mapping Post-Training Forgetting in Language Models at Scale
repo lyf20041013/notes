@@ -1,0 +1,41 @@
+# 文献笔记：Mapping Post-Training Forgetting in Language Models at Scale
+
+## 元信息
+- **标题**：Mapping Post-Training Forgetting in Language Models at Scale
+- **作者**：Jackson Harmon, Andreas Hochlehnert, Matthias Bethge, Ameya Prabhu
+- **会议**：ICLR 2026（Rio de Janeiro, Brazil, April 23–27, 2026）
+- **arXiv**：2510.17776（2025-10-20）
+- **项目页**：https://post-forget.github.io/
+- **中文笔记**：https://github.com/xht252/paper-notes/blob/main/docs/ICLR2026/llm_evaluation/mapping_post-training_forgetting_in_language_models_at_scale.md
+
+## 一句话总结
+论文提出**样本级、去随机猜测**的遗忘/反向迁移度量，并用近 30 个模型对、约 100 个子基准的大规模实测表明：现实后训练中的遗忘远低于“灾难性遗忘”的默认预期，不同后训练阶段的遗忘—迁移模式差异显著。
+
+## 核心贡献
+1. **方法论：样本级转移计数**
+   - 将每个样本按训练前后对错归入四象限。
+   - **1→0 翻转**计为遗忘；**0→1 翻转**计为反向迁移。
+   - 对多选题加入**去随机猜测修正**，扣除运气猜对造成的虚假翻转。
+   - 动机：聚合准确率会把“丢失”和“获取”相互抵消，掩盖真实变化。
+
+2. **实证：大规模“遗忘地图”**
+   - Domain-continual pretraining：**中等遗忘 + 低反向迁移**。
+   - RL/SFT 用于 base model 或 instruction tuning：**显著反向迁移 + 较低遗忘**，数学/逻辑领域尤其普遍。
+   - 对 instruction-tuned 模型再做 RL/SFT：效果对数据规模敏感，小规模下遗忘和反向迁移都小，大规模下效应混杂。
+   - **Model merging 不能可靠缓解遗忘**。
+
+3. **范式主张**
+   - 并非所有遗忘都等价：遗忘一个事实不会因为回忆起另一个事实而“平均掉”。
+   - 评估必须指定**后训练阶段和起点**，笼统的“后训练导致遗忘”是过度概括。
+
+## 对当前课题的启发
+- 先做**基线层面的样本级遗忘测量**，确认“灾难性遗忘”是否真的是主要矛盾，而非直接套用旧叙事。
+- 讨论后训练影响时，必须**明确阶段与起点**（domain-continual pretraining / RL-SFT 冷启动 / instruction tuning 后接 RL-SFT）。
+- 1→0 / 0→1 转移计数成本低，可作为**辅助诊断指标**，判断训练是“普遍提升”还是“以旧换新”。
+
+## 相关链接
+- arXiv：https://arxiv.org/abs/2510.17776
+- ar5iv 可读版：https://ar5iv.labs.arxiv.org/html/2510.17776
+- 项目页（代码 + 交互图）：https://post-forget.github.io/
+- 中文论文笔记：https://github.com/xht252/paper-notes/blob/main/docs/ICLR2026/llm_evaluation/mapping_post-training_forgetting_in_language_models_at_scale.md
+- 英文论文笔记：https://github.com/zhaoyang97/Paper-Notes-en/blob/main/docs/ICLR2026/llm_evaluation/mapping_post-training_forgetting_in_language_models_at_scale.md
